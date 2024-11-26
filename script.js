@@ -39,7 +39,6 @@ async function setupWebcam() {
 // Load ML Model and Start Detection
 async function loadModelAndDetect() {
     const model = await cocoSsd.load();
-    console.log("COCO SSD Model Loaded!");
 
     const webcam = await setupWebcam();
     webcam.play();
