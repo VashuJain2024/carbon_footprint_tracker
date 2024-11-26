@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>AR Carbon Footprint Tracker</title>
+    <script src="https://aframe.io/releases/1.2.0/aframe.min.js"></script>
+    <script src="https://cdn.rawgit.com/jeromeetienne/ar.js/1.7.2/aframe-ar.min.js"></script>
+    <link rel="stylesheet" href="styles.css" />
+
+    <style>
+      /* styles.css */
+
+      body {
+        margin: 0;
+        font-family: Arial, sans-serif;
+        background: #f4f4f4;
+      }
+
+      a-scene {
+        width: 100vw;
+        height: 100vh;
+      }
+
+      #data-overlay {
+        animation: fadeIn 1s ease-in-out;
+      }
+
+      @keyframes fadeIn {
+        from {
+          opacity: 0;
+        }
+        to {
+          opacity: 1;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <a-scene embedded arjs>
+      <!-- Marker -->
+      <a-marker preset="hiro" id="marker">
+        <!-- Placeholder for AR content -->
+        <a-entity id="data-overlay" position="0 0.5 0">
+          <a-text
+            value="Scan an item..."
+            color="black"
+            position="0 0 0"
+          ></a-text>
+        </a-entity>
+      </a-marker>
+      <a-entity camera></a-entity>
+    </a-scene>
+
+    <script>
+      // script.js
+
+      document.addEventListener("DOMContentLoaded", () => {
+        const marker = document.getElementById("marker");
+        const overlay = document.getElementById("data-overlay");
+
+        // Marker detection event
+        marker.addEventListener("markerFound", () => {
+          fetchData("sample-item");
+        });
+
+        marker.addEventListener("markerLost", () => {
+          overlay.innerHTML =
+            '<a-text value="Scan an item..." color="black" position="0 0 0"></a-text>';
+        });
+
+        // Fetch and display data
+        async function fetchData(item) {
+          const data = {
+            "sample-item": {
+              carbon: "12 kg CO₂",
+              water: "15 liters",
+              alternative: "Locally sourced version",
+            },
+          };
+
+          if (data[item]) {
+            overlay.innerHTML = `
+                        <a-text value="Carbon: ${data[item].carbon}" color="red" position="0 0.2 0"></a-text>
+                        <a-text value="Water: ${data[item].water}" color="blue" position="0 0 0"></a-text>
+                        <a-text value="Alt: ${data[item].alternative}" color="green" position="0 -0.2 0"></a-text>
+                    `;
+          } else {
+            overlay.innerHTML =
+              '<a-text value="Data not found." color="black" position="0 0 0"></a-text>';
+          }
+        }
+      });
+    </script>
+  </body>
+</html>
