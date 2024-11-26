@@ -3,128 +3,60 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>AR Carbon Footprint Tracker</title>
+    <title>Carbon Footprint Tracker</title>
+    <script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@tensorflow-models/coco-ssd"></script>
     <style>
       body {
+        font-family: Arial, sans-serif;
         margin: 0;
-        overflow: hidden;
-      }
-
-      #unityContainer {
-        width: 100%;
-        height: 100vh;
+        padding: 0;
         display: flex;
-        justify-content: center;
+        flex-direction: column;
         align-items: center;
+        justify-content: center;
       }
 
-      #arCanvas {
-        position: absolute;
+      #webcam {
         width: 100%;
-        height: 100%;
+        max-width: 640px;
+        border: 2px solid #ccc;
+        border-radius: 10px;
+        margin-top: 20px;
       }
 
       .info-box {
-        position: fixed;
-        bottom: 20px;
-        left: 20px;
-        background-color: rgba(0, 0, 0, 0.7);
-        color: white;
-        padding: 10px;
-        border-radius: 5px;
+        width: 100%;
+        max-width: 640px;
+        background: #f4f4f4;
+        border-radius: 10px;
+        padding: 15px;
+        margin-top: 10px;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+      }
+
+      .info-box h3 {
+        margin: 0;
+      }
+
+      .info-box p {
+        margin: 5px 0;
       }
     </style>
   </head>
   <body>
-    <!-- Unity WebGL Container -->
-    <div id="unityContainer">
-      <div id="unityWebGL" class="unity-webgl-container"></div>
-    </div>
-
-    <!-- AR.js Canvas -->
-    <div id="arCanvas" style="z-index: 999"></div>
-
-    <!-- Information Display -->
+    <h1>Carbon Footprint Tracker</h1>
+    <video id="webcam" autoplay playsinline></video>
     <div class="info-box">
-      <h3>Carbon Footprint Data</h3>
-      <p id="carbonData">Scan a product to see its footprint</p>
+      <h3>Detected Object</h3>
+      <p id="detectedObject">Scanning...</p>
+      <h3>Carbon Footprint</h3>
+      <p id="carbonData">N/A</p>
+      <h3>Water Usage</h3>
+      <p id="waterData">N/A</p>
+      <h3>Alternative Suggestion</h3>
+      <p id="alternativeData">N/A</p>
     </div>
-
-    <!-- AR.js Scripts -->
-    <script src="https://aframe.io/releases/1.2.0/aframe.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/gh/jeromeetienne/AR.js/aframe/build/aframe-ar.js"></script>
-
-    <!-- Unity WebGL Script -->
-    <script>
-      var unityInstance = null;
-
-      // Initialize Unity WebGL
-      var unityContainer = document.getElementById("unityWebGL");
-      var unityConfig = {
-        loaderUrl: "Build/UnityBuild.loader.js",
-        dataUrl: "Build/UnityBuild.data",
-        frameworkUrl: "Build/UnityBuild.framework.js",
-        codeUrl: "Build/UnityBuild.wasm",
-        streamingAssetsUrl: "StreamingAssets",
-        companyName: "YourCompany",
-        productName: "AR Carbon Footprint Tracker",
-        productVersion: "1.0",
-      };
-
-      function initUnity() {
-        unityInstance = UnityLoader.instantiate("unityWebGL", unityConfig);
-      }
-
-      window.onload = initUnity;
-
-      // AR.js Setup
-      const markerId = "hiro"; // Use the hiro marker for testing
-
-      // AR.js marker detection and action
-      let markerVisible = false;
-      let carbonData = "No data available";
-
-      function onMarkerFound() {
-        // Example: Update the carbon footprint data when the marker is found
-        document.getElementById("carbonData").innerText =
-          "Carbon: 1.2 kg CO₂ | Water: 500L";
-      }
-
-      function onMarkerLost() {
-        // Reset when the marker is lost
-        document.getElementById("carbonData").innerText =
-          "Scan a product to see its footprint";
-      }
-
-      // AR.js configuration (marker detection)
-      AFRAME.registerComponent("markerhandler", {
-        init: function () {
-          const marker = this.el;
-          marker.addEventListener("markerFound", onMarkerFound);
-          marker.addEventListener("markerLost", onMarkerLost);
-        },
-      });
-
-      // Set up the AR scene with A-Frame and AR.js
-      let scene = document.createElement("a-scene");
-      scene.setAttribute("embedded", true);
-      scene.setAttribute("arjs", "sourceType: webcam; debugUIEnabled: false;");
-
-      let marker = document.createElement("a-marker");
-      marker.setAttribute("preset", "hiro"); // Using Hiro marker for AR.js
-      marker.setAttribute("markerhandler", "");
-
-      let model = document.createElement("a-entity");
-      model.setAttribute(
-        "geometry",
-        "primitive: box; height: 0.5; width: 0.5; depth: 0.5"
-      );
-      model.setAttribute("material", "color: blue");
-      model.setAttribute("position", "0 0.25 0");
-      marker.appendChild(model);
-
-      scene.appendChild(marker);
-      document.body.appendChild(scene);
-    </script>
+    <script src="script.js"></script>
   </body>
 </html>
