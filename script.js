@@ -13,17 +13,28 @@ const waterDataElement = document.getElementById("waterData");
 const alternativeDataElement = document.getElementById("alternativeData");
 
 // Initialize Webcam
+// Initialize Webcam with Rear Camera
 async function setupWebcam() {
     return new Promise((resolve, reject) => {
         navigator.mediaDevices
-            .getUserMedia({ video: true })
+            .getUserMedia({
+                video: { facingMode: { exact: "environment" } }, // Use rear camera
+                audio: false,
+            })
             .then((stream) => {
                 webcamElement.srcObject = stream;
                 webcamElement.onloadedmetadata = () => resolve(webcamElement);
             })
-            .catch((err) => reject(err));
+            .catch((err) => {
+                console.error("Error accessing the rear camera:", err);
+                alert(
+                    "Unable to access the rear camera. Please ensure your device and browser support this feature."
+                );
+                reject(err);
+            });
     });
 }
+
 
 // Load ML Model and Start Detection
 async function loadModelAndDetect() {
