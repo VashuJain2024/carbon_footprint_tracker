@@ -47,3 +47,9 @@ The **Carbon Footprint Tracker** is a web-based application that uses machine le
    ```bash
    git clone https://github.com/VashuJain2024/carbon_footprint_tracker.git
    cd carbon_footprint_tracker
+
+---
+
+## Screenshots
+![Screenshot 2025-01-02 205350](https://github.com/user-attachments/assets/f3a8d7e3-f4d4-4f72-b182-6162307590a5)
+
