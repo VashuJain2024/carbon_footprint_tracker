@@ -11,6 +11,7 @@ The **Carbon Footprint Tracker** is a web-based application that uses machine le
   - Carbon footprint (in kg CO₂).
   - Water usage (in liters).
   - Alternative suggestions for eco-friendliness.
+- **Hardcoded Data**: Sustainability data for objects (carbon footprint, water usage, and alternatives) is hardcoded in the application for demonstration purposes.
 - **Dynamic Data Display**: Provides object-specific sustainability data from a predefined dataset.
 - **Fallback for Unsupported Objects**: Alerts users when sustainability data for a detected object is unavailable.
 
